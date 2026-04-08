@@ -1,5 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
 
+    const container = document.getElementById("rest-users");
+    if (!container) {
+       // console.error("Container element not found");
+        return;
+    }
+
     fetch(udvRest.rest_url)
         .then(res => res.json())
         .then(data => {
@@ -7,12 +13,14 @@ document.addEventListener("DOMContentLoaded", function () {
             let output = "<ul>";
 
             data.forEach(user => {
-                output += `<li>${user.name} - ${user.email}</li>`;
+                output += `<li>${user.name} - ${user.email} - ${user.address.city} - ${user.address.geo.lng}</li>`;
             });
 
             output += "</ul>";
 
-            document.getElementById("rest-users").innerHTML = output;
-        });
-
+           container.innerHTML = output;
+        })
+            .catch(() => {
+                container.innerHTML = "Error loading users";
+            });
 });
